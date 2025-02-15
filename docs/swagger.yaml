@@ -1,0 +1,49 @@
+basePath: /api
+definitions:
+  controllers.QRCodeRequest:
+    properties:
+      text:
+        type: string
+    required:
+    - text
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API para gerar QR Codes
+  title: Gerator de QR Codes
+  version: "1.0"
+paths:
+  /generate:
+    post:
+      consumes:
+      - application/json
+      description: Gera um QR Code a partir do texto fornecido no corpo da requisição
+      parameters:
+      - description: Texto a ser convertido em QR Code
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.QRCodeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: QR Code gerado com sucesso
+          schema:
+            type: file
+        "400":
+          description: Requisição inválida
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Erro ao gerar o QR Code
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Gerar um QR Code
+swagger: "2.0"
