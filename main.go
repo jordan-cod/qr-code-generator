@@ -21,6 +21,9 @@ import (
 func main() {
 	config.LoadEnv()
 
+	ginMode := config.GetEnv("GIN_MODE", "debug")
+	gin.SetMode(ginMode)
+
 	router := gin.Default()
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
