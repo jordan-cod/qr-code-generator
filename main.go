@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
+	"qr-code-generator/config"
 	_ "qr-code-generator/docs"
-	"qr-code-generator/internal/config"
 	"qr-code-generator/internal/routes"
 
 	swaggerFiles "github.com/swaggo/files"
