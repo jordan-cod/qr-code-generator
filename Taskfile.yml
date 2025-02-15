@@ -1,0 +1,7 @@
+version: '3'
+
+tasks:
+  run-dev:
+    cmds:
+      - air -c .\air.toml
+    desc: Run the application in development mode
