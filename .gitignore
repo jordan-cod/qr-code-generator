@@ -1,0 +1,60 @@
+# Binários compilados
+*.exe
+*.dll
+*.so
+*.dylib
+*.o
+*.a
+*.out
+*.bin
+
+# Diretório de build e cache
+/build/
+/bin/
+/pkg/
+
+# Arquivos de cache do Go Modules
+go.sum
+go.work
+go.work.sum
+
+# Dependências do módulo Go vendorizadas
+vendor/
+
+# Diretório de cache do Go
+**/cache/
+*.test
+
+# Arquivos de logs e debug
+*.log
+*.test
+trace.out
+heap.out
+cpu.out
+
+# Arquivos do editor e sistema
+*.swp
+*.swo
+*.bak
+*~
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# Docker e Contêineres (se usar Docker)
+docker-compose.override.yml
+.dockerignore
+
+# Configurações e segredos sensíveis
+.env
+.env.local
+.env.*.local
+config.yaml
+config.json
+secrets.json
+keys/
+certs/
+*.pem
+*.key
