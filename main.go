@@ -25,6 +25,7 @@ func main() {
 	gin.SetMode(ginMode)
 
 	router := gin.Default()
+	config.SetupCORS(router)
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	routes.SetupRoutes(router)
