@@ -4,6 +4,7 @@ import (
 	"log"
 	"qr-code-generator/config"
 	_ "qr-code-generator/docs"
+	"qr-code-generator/internal/database"
 	"qr-code-generator/internal/routes"
 
 	swaggerFiles "github.com/swaggo/files"
@@ -20,6 +21,7 @@ import (
 // @BasePath        /api
 func main() {
 	config.LoadEnv()
+	database.Connect()
 
 	ginMode := config.GetEnv("GIN_MODE", "debug")
 	gin.SetMode(ginMode)
@@ -33,5 +35,5 @@ func main() {
 	port := config.GetEnv("PORT", "8080")
 	log.Printf("Listening on port %s", port)
 
-	router.Run(":" + port)
+	log.Fatal(router.Run(":" + port))
 }
