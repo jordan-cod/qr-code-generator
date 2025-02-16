@@ -2,6 +2,9 @@ package controllers
 
 import (
 	"net/http"
+	"qr-code-generator/internal/database"
+	"qr-code-generator/internal/models"
+	"qr-code-generator/internal/repositories"
 
 	"github.com/gin-gonic/gin"
 	"github.com/skip2/go-qrcode"
@@ -32,6 +35,24 @@ func GenerateQRCode(c *gin.Context) {
 	qrCodeImage, err := qrcode.Encode(request.Text, qrcode.Medium, 256)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao gerar o QR Code"})
+		return
+	}
+
+	userID, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Usuário não autenticado"})
+		return
+	}
+
+	qrcodeRepo := repositories.NewRepository[models.QRCode](database.GetDB())
+	qrCodeModel := models.QRCode{
+		Text:   request.Text,
+		Image:  qrCodeImage,
+		UserID: userID.(string),
+	}
+
+	if err := qrcodeRepo.Create(c.Request.Context(), &qrCodeModel); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao salvar o QR Code no banco de dados"})
 		return
 	}
 

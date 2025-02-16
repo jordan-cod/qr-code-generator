@@ -3,6 +3,8 @@ package services
 import (
 	"context"
 	"errors"
+	"log"
+	"qr-code-generator/config"
 	"qr-code-generator/internal/database"
 	"qr-code-generator/internal/models"
 	"qr-code-generator/internal/repositories"
@@ -12,20 +14,23 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var jwtKey = []byte("your_secret_key")
-
 func ComparePassword(hashedPassword, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
 
 func GenerateJWT(userID string) (string, error) {
-	claims := &jwt.StandardClaims{
-		Issuer:    userID,
-		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
+	secretKey := config.GetEnv("JWT_SECRET_KEY", "")
+	if secretKey == "" {
+		log.Panic("Variável de ambiente obrigatória não encontrada: JWT_SECRET_KEY")
+	}
+
+	claims := jwt.MapClaims{
+		"user_id": userID,
+		"exp":     time.Now().Add(time.Hour * 24).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(jwtKey)
+	return token.SignedString([]byte(secretKey))
 }
 
 func AuthenticateUser(ctx context.Context, email, password string) (string, error) {
