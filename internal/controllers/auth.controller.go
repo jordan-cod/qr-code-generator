@@ -52,7 +52,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Usuário cadastrado com sucesso"})
+	c.JSON(http.StatusCreated, gin.H{"message": "Usuário cadastrado com sucesso"})
 }
 
 type SignInRequest struct {
